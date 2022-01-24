@@ -1,5 +1,5 @@
 const { ChannelModel } = require('../helpers/db');
-const { targetChannelIds,apiEndpoint } = require('../config.json');
+const { targetChannelIds,apiEndpoint,updateInterval } = require('../config.json');
 const { update_proposal_statuses } = require("../helpers/update");
 
 async function setupChannelDB() {
@@ -17,6 +17,9 @@ module.exports = {
 	name: 'ready',
 	once: true,
 	execute(client) {
+		function checkUpdate(){
+			update_proposal_statuses(apiEndpoint,interaction=client,slient=false);
+		}
 		console.log(`Connected to Discord API Server as ${client.user.tag}`);
 		if (targetChannelIds) {
 			ChannelModel.destroy({ truncate: true }).then(v => {
@@ -25,6 +28,7 @@ module.exports = {
 		} else {
 			console.log("targetChannelIds not exist, skipping rebuild announcement channel lists.")
 		}
-		update_proposal_statuses(apiEndpoint,interaction=client,slient=false);
+		checkUpdate()
+		setInterval(checkUpdate, updateInterval*1000);
 	},
 };

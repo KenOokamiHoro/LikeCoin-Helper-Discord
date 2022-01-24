@@ -41,8 +41,8 @@ const more_information = {
 function build_announcement(proposal) {
     const status = proposal.status;
     let title = bold(`${proposal.content.title}`);
-    let text = `\n${title}\n\n${proposal.content.description}`
-    const message = `${status_to_emoji(status)} Proposal ${proposal.proposal_id} ${update_descriptions[status]}
+    let text = `${title}\n${proposal.content.description}`
+    const message = `\n${status_to_emoji(status)} Proposal ${proposal.proposal_id} ${update_descriptions[status]}
 ${blockQuote(`${text}`)}
 
 ${more_information[status]}
