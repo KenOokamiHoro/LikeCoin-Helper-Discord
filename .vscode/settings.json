@@ -1,0 +1,12 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "local",
+            "database": "${workspaceFolder:LikeCoin-Helper-Discord}/db.sqlite",
+            "group": "local"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}

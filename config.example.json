@@ -1,0 +1,22 @@
+{
+    /* Your bot's clientID , guidID and token accquired from Discord." */
+    "clientId": "",
+	"guildId": "",
+	"token": "",
+    /* ID of the bot's owner, 
+     * you may get it (and other IDs below) through Discord client's Developer Mode. */
+    "ownerId":"1234567890",
+    /* Channel IDs which the bot will send updates to.
+     * set this will disable bot's register channel command. */
+    "targetChannelIds":[
+        "0"
+    ],
+    /* Channel ID which the bot will use in update messages.*/
+    "discussChannelId":"0",
+    /* API endpoint for LikeCoin Chain. */
+    "apiEndpoint": "https://mainnet-node.like.co",
+    /* Checking updates intervals in second.
+     * You may adjust this for debugging or reduce load of API enderpoint.
+     */
+    "updateInterval": 3600
+}

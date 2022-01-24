@@ -1,0 +1,27 @@
+[Unit]
+Description=LikeCoin Helper Bot on Discord
+Documentation=
+Wants=local-fs.target network.target
+After=local-fs.target network.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=simple
+User=nobody
+WorkingDirectory=/path/to/this/project
+ExecStart=/usr/bin/node /path/to/this/project/index.js
+KillMode=process
+Restart=on-abnormal
+PrivateTmp=true
+StandardOutput=syslog
+PrivateDevices=true
+ProtectSystem=full
+ProtectHome=true
+NoNewPrivileges=true
+CapabilityBoundingSet=
+ReadOnlyPaths=/
+ReadWritePaths=/run
+ReadWritePaths=/path/to/this/project
+StandardOutput=syslog
