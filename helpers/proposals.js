@@ -5,6 +5,8 @@ const { bold, blockQuote } = require('@discordjs/builders');
 
 
 async function fetch_proposals(apiEndpoint, statuses = false) {
+    /* Get proposals from LikeCoin Chain node.
+     */
     const res = await fetch(apiEndpoint.concat('/cosmos/gov/v1beta1/proposals'));
     const json = await res.json();
     const totals = json.proposals;

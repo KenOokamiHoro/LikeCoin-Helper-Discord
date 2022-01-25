@@ -6,6 +6,7 @@ const { bold, blockQuote, channelMention } = require('@discordjs/builders');
 const { targetChannelIds, discussChannelId } = require("../config.json");
 
 function discussion_channel(discussChannelId) {
+    /* Mention a channel for discussion if specified. */
     if (discussChannelId) {
         return `Releated discussions on ${channelMention(discussChannelId)}`
     } else {
