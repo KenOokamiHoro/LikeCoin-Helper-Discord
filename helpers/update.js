@@ -17,7 +17,7 @@ function discussion_channel(discussChannelId) {
 const update_descriptions = {
     "PROPOSAL_STATUS_DEPOSIT_PERIOD": "has been raised and in Deposit Period. ",
     "PROPOSAL_STATUS_VOTING_PERIOD": "has been collected enough deposits and in Voting Period.",
-    "PROPOSAL_STATUS_PASSED": "has been Passed. Thank you all who voted it! :likecoin01: :thumbsup:",
+    "PROPOSAL_STATUS_PASSED": "has been Passed. Thank you all who voted it! :thumbsup:",
     "PROPOSAL_STATUS_REJECTED": "has been Rejected.",
 };
 const bigdipper_tips = {
@@ -27,10 +27,10 @@ const bigdipper_tips = {
     "PROPOSAL_STATUS_REJECTED": "View tally result on BigDipper",
 };
 const stake_like_co_tips = {
-    "PROPOSAL_STATUS_DEPOSIT_PERIOD": "Deposit on stake.like.co",
-    "PROPOSAL_STATUS_VOTING_PERIOD": "Vote on stake.like.co",
-    "PROPOSAL_STATUS_PASSED": "View tally result on stake.like.co",
-    "PROPOSAL_STATUS_REJECTED": "View tally result on stake.like.co",
+    "PROPOSAL_STATUS_DEPOSIT_PERIOD": "Deposit on dao.like.co",
+    "PROPOSAL_STATUS_VOTING_PERIOD": "Vote on dao.like.co",
+    "PROPOSAL_STATUS_PASSED": "View tally result on dao.like.co",
+    "PROPOSAL_STATUS_REJECTED": "View tally result on dao.like.co",
 }
 const more_information = {
     "PROPOSAL_STATUS_DEPOSIT_PERIOD": discussion_channel(discussChannelId),
@@ -62,7 +62,7 @@ ${more_information[status]}
                 new MessageButton()
                     .setLabel(`${stake_like_co_tips[status]}`)
                     .setStyle('LINK')
-                    .setURL(`https://stake.like.co/proposals/${proposal.proposal_id}`),
+                    .setURL(`https://dao.like.co/proposals/${proposal.proposal_id}`),
             )]
     }
 }

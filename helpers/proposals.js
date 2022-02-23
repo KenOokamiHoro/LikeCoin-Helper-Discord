@@ -48,9 +48,9 @@ ${proposal.content.description}`
                     .setURL(`https://likecoin.bigdipper.live/proposals/${proposal.proposal_id}`),
             ).addComponents(
                 new MessageButton()
-                    .setLabel('stake.like.co')
+                    .setLabel('dao.like.co')
                     .setStyle('LINK')
-                    .setURL(`https://stake.like.co/proposals/${proposal.proposal_id}`),
+                    .setURL(`https://dao.like.co/proposals/${proposal.proposal_id}`),
             )]
     }
 }

@@ -19,7 +19,7 @@ A simple helper for getting informations about LikeCoin on Discord.
 
 * `/active` - Get depositing and voting proposals.
 * `/latest` - Get latest proposal
-* `/proposal <id>` - Get specified proposal's basic information and links to BigDipper or stake.like.co .
+* `/proposal <id>` - Get specified proposal's basic information and links to BigDipper or dao.like.co .
 
 ## License
 
