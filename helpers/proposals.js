@@ -53,7 +53,7 @@ ${proposal.content.description}`
                     .setURL(`https://www.mintscan.io/likecoin/proposals/${proposal.proposal_id}`),
             ).addComponents(
                 new MessageButton()
-                    .setLabel(`${stake_like_co_tips[status]}`)
+                    .setLabel(`LikeCoin DAO`)
                     .setStyle('LINK')
                     .setURL(`https://dao.like.co/proposals/${proposal.proposal_id}`),
             )]
