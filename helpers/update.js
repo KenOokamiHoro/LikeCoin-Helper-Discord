@@ -3,7 +3,7 @@ const { ProposalModel, StatusModel } = require('../helpers/db');
 const { status_to_emoji } = require("./statuses")
 const { MessageActionRow, MessageButton } = require('discord.js');
 const { bold, blockQuote, channelMention } = require('@discordjs/builders');
-const { targetChannelIds, discussChannelId } = require("../config.json");
+const { targetChannelIds, discussChannelId, maxDescriptionLength } = require("../config.json");
 
 function discussion_channel(discussChannelId) {
     /* Mention a channel for discussion if specified. */
@@ -32,6 +32,14 @@ const stake_like_co_tips = {
     "PROPOSAL_STATUS_PASSED": "View tally result on dao.like.co",
     "PROPOSAL_STATUS_REJECTED": "View tally result on dao.like.co",
 }
+
+const mintscan_tips = {
+    "PROPOSAL_STATUS_DEPOSIT_PERIOD": "View more information on Mintscan",
+    "PROPOSAL_STATUS_VOTING_PERIOD": "View more information on Mintscan",
+    "PROPOSAL_STATUS_PASSED": "View tally result on Mintscan",
+    "PROPOSAL_STATUS_REJECTED": "View tally result on Mintscan",
+}
+
 const more_information = {
     "PROPOSAL_STATUS_DEPOSIT_PERIOD": discussion_channel(discussChannelId),
     "PROPOSAL_STATUS_VOTING_PERIOD": discussion_channel(discussChannelId),
@@ -40,9 +48,18 @@ const more_information = {
 }
 
 function build_announcement(proposal) {
+    // Build announcement text on proposal updates
     const status = proposal.status;
     let title = bold(`${proposal.content.title}`);
-    let text = `${title}\n${proposal.content.description}`
+    let description = proposal.content.description;
+    var text;
+    if (description.length > maxDescriptionLength) {
+        text = `${title}\n${description.substring(0, maxDescriptionLength)}...`
+
+    } else {
+        text = `${title}\n${description}`
+
+    }
     const message = `\n${status_to_emoji(status)} Proposal ${proposal.proposal_id} ${update_descriptions[status]}
 ${blockQuote(`${text}`)}
 
@@ -57,7 +74,12 @@ ${more_information[status]}
                 new MessageButton()
                     .setLabel(`${bigdipper_tips[status]}`)
                     .setStyle('LINK')
-                    .setURL(`https://likecoin.bigdipper.live/proposals/${proposal.proposal_id}`),
+                    .setURL(`https://bigdipper.live/likecoin/proposals/${proposal.proposal_id}`),
+            ).addComponents(
+                new MessageButton()
+                    .setLabel(`${mintscan_tips[status]}`)
+                    .setStyle('LINK')
+                    .setURL(`https://www.mintscan.io/likecoin/proposals/${proposal.proposal_id}`),
             ).addComponents(
                 new MessageButton()
                     .setLabel(`${stake_like_co_tips[status]}`)
@@ -75,6 +97,9 @@ async function update_proposal_statuses(apiEndpoint, client, slient = false) {
 }
 
 async function update_proposal(proposal, client = undefined, slient = false) {
+    // Update proposal statuses in updateInterval.
+    // If slient is set (used in initialize caches), 
+    // it will no messages send to target channel but leave logs on console.
     if (!slient) {
         channels = []
         targetChannelIds.forEach(id => {
@@ -105,6 +130,7 @@ async function update_proposal(proposal, client = undefined, slient = false) {
         ProposalModel.create({
             id: proposal.proposal_id,
             title: proposal.content.title,
+            type: proposal.content['@type'],
             description: proposal.content.description,
             status: proposal.status,
             submit_time: proposal.submit_time,
@@ -112,9 +138,11 @@ async function update_proposal(proposal, client = undefined, slient = false) {
             voting_start_time: proposal.voting_end_time,
             voting_end_time: proposal.voting_end_time
         }).then(response => {
-            channels.forEach(channel => {
-                channel.send(build_announcement(proposal));
-            })
+            if (!slient) {
+                channels.forEach(channel => {
+                    channel.send(build_announcement(proposal));
+                })
+            }
             console.log(`Cached new proposal ${response.id}.`)
         })
     }

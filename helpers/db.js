@@ -16,12 +16,14 @@ const ProposalModel = sequelize.define('Propsals', {
 		unique: true,
 	},
 	title: Sequelize.STRING,
+	type: Sequelize.STRING,
 	description: Sequelize.TEXT,
 	status: Sequelize.STRING,
 	submit_time: Sequelize.STRING,
 	deposit_end_time: Sequelize.STRING,
 	voting_start_time: Sequelize.STRING,
-    voting_end_time: Sequelize.STRING
+    voting_end_time: Sequelize.STRING,
+	thread: Sequelize.INTEGER
 });
 
 const ChannelModel = sequelize.define('Channels', {
@@ -41,3 +43,7 @@ module.exports = {
 	ChannelModel,
 	StatusModel
 }
+
+ProposalModel.sync();
+ChannelModel.sync();
+StatusModel.sync();
