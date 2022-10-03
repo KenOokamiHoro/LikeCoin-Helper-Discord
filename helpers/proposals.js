@@ -48,7 +48,7 @@ ${proposal.content.description}`
                     .setURL(`https://likecoin.bigdipper.live/proposals/${proposal.proposal_id}`),
             ).addComponents(
                 new MessageButton()
-                    .setLabel(`${mintscan_tips[status]}`)
+                    .setLabel(`Mintscan`)
                     .setStyle('LINK')
                     .setURL(`https://www.mintscan.io/likecoin/proposals/${proposal.proposal_id}`),
             ).addComponents(
