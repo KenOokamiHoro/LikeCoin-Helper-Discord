@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { ChannelModel } = require('../helpers/db');
-const { ownerId } = require('../config.json');
+const { ChannelModel } = require('../../helpers/db');
+const { ownerId } = require('../../config.json');
 
 const deniedReply = {
 	content: '🚫 Please contact this bot\'s owner for this operation.',

@@ -1,7 +1,7 @@
 const { fetch } = require('undici');
 const { status_to_text } = require('./statuses');
-const { MessageActionRow, MessageButton } = require('discord.js');
 const { bold, blockQuote } = require('@discordjs/builders');
+const { proposal_action_row } = require("./action_row")
 
 
 async function fetch_proposals(apiEndpoint, statuses = false) {
@@ -29,34 +29,17 @@ async function fetch_proposals(apiEndpoint, statuses = false) {
 async function fetch_proposal(apiEndpoint, proposal_id) {
     const res = await fetch(apiEndpoint.concat('/cosmos/gov/v1/proposals/',proposal_id));
     const json = await res.json();
-    console.log(json);
     return json
 }
 
 function describe_proposal(proposal) {
-    let title = bold(`${status_to_text(proposal.status)} Proposal ${proposal.proposal_id} - ${proposal.content.title}`);
+    let title = bold(`${status_to_text(proposal.status)} Proposal ${proposal.id} - ${proposal.messages[0].content.title}`);
     let text = `${title}
-${proposal.content.description}`
+${proposal.messages[0].content.description}`
     return {
         content: blockQuote(text),
-        ephemeral: false,
-        components: [new MessageActionRow()
-            .addComponents(
-                new MessageButton()
-                    .setLabel('BigDipper')
-                    .setStyle('LINK')
-                    .setURL(`https://likecoin.bigdipper.live/proposals/${proposal.proposal_id}`),
-            ).addComponents(
-                new MessageButton()
-                    .setLabel(`Mintscan`)
-                    .setStyle('LINK')
-                    .setURL(`https://www.mintscan.io/likecoin/proposals/${proposal.proposal_id}`),
-            ).addComponents(
-                new MessageButton()
-                    .setLabel(`LikeCoin DAO`)
-                    .setStyle('LINK')
-                    .setURL(`https://dao.like.co/proposals/${proposal.proposal_id}`),
-            )]
+        ephemeral: true,
+        components: [proposal_action_row(proposal)]
     }
 }
 
