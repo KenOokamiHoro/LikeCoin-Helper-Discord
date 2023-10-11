@@ -9,7 +9,7 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 	storage: 'db.sqlite',
 });
 
-const ProposalModel = sequelize.define('Propsals', {
+const ProposalModel = sequelize.define('Proposals', {
 	id: {
 		type: Sequelize.INTEGER,
 		primaryKey: true,

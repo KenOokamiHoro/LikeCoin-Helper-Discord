@@ -92,11 +92,11 @@ ${more_information[status]}
 async function update_proposal_statuses(apiEndpoint, client, slient = false) {
     const proposals = await fetch_proposals(apiEndpoint = apiEndpoint);
     proposals.forEach(proposal => {
-        update_proposal(proposal, client, slient);
+        update_proposal(apiEndpoint, proposal, client, slient);
     })
 }
 
-async function update_proposal(proposal, client = undefined, slient = false) {
+async function update_proposal(apiEndpoint, proposal, client = undefined, slient = false) {
     // Update proposal statuses in updateInterval.
     // If slient is set (used in initialize caches), 
     // it will no messages send to target channel but leave logs on console.
@@ -106,7 +106,7 @@ async function update_proposal(proposal, client = undefined, slient = false) {
             channels.push(client.channels.cache.get(id))
         });
     }
-    const cached = await ProposalModel.findOne({ where: { id: proposal.proposal_id } });
+    const cached = await ProposalModel.findByPk(proposal.id);
     if (cached) {
         if (!(cached.status == proposal.status)) {
             ProposalModel.update({
@@ -115,7 +115,7 @@ async function update_proposal(proposal, client = undefined, slient = false) {
                 deposit_end_time: proposal.deposit_end_time,
                 voting_start_time: proposal.voting_end_time,
                 voting_end_time: proposal.voting_end_time
-            }, { where: { id: proposal.proposal_id } }).then(response => {
+            }, { where: { id: proposal.id } }).then(response => {
                 if (!slient) {
                     channels.forEach(channel => {
                         channel.send(build_announcement(proposal));
@@ -124,27 +124,47 @@ async function update_proposal(proposal, client = undefined, slient = false) {
                 console.log(`Updated proposal ${response.id}.`)
             })
         } else {
-            console.log(`Proposal ${proposal.proposal_id} is not changed.`)
+            console.log(`Proposal ${proposal.id} is not changed.`)
         }
     } else {
-        ProposalModel.create({
-            id: proposal.proposal_id,
-            title: proposal.content.title,
-            type: proposal.content['@type'],
-            description: proposal.content.description,
-            status: proposal.status,
-            submit_time: proposal.submit_time,
-            deposit_end_time: proposal.deposit_end_time,
-            voting_start_time: proposal.voting_end_time,
-            voting_end_time: proposal.voting_end_time
-        }).then(response => {
-            if (!slient) {
-                channels.forEach(channel => {
-                    channel.send(build_announcement(proposal));
-                })
-            }
-            console.log(`Cached new proposal ${response.id}.`)
-        })
+        console.log(proposal.messages);
+        if (proposal.messages.length > 0) {
+            ProposalModel.create({
+                id: proposal.id,
+                title: proposal.messages[0].content.title,
+                type: proposal.messages[0].content['@type'],
+                description: proposal.messages[0].content.description,
+                status: proposal.status,
+                submit_time: proposal.submit_time,
+                deposit_end_time: proposal.deposit_end_time,
+                voting_start_time: proposal.voting_end_time,
+                voting_end_time: proposal.voting_end_time
+            }).then(response => {
+                if (!slient) {
+                    channels.forEach(channel => {
+                        channel.send(build_announcement(proposal));
+                    })
+                }
+                console.log(`Cached new proposal ${response.id}.`)
+            })
+        } else {
+            ProposalModel.create({
+                id: proposal.id,
+                status: proposal.status,
+                submit_time: proposal.submit_time,
+                deposit_end_time: proposal.deposit_end_time,
+                voting_start_time: proposal.voting_end_time,
+                voting_end_time: proposal.voting_end_time
+            }).then(response => {
+                if (!slient) {
+                    channels.forEach(channel => {
+                        channel.send(build_announcement(proposal));
+                    })
+                }
+                console.log(`Cached new proposal ${response.id}.`)
+            })
+        }
+
     }
 }
 

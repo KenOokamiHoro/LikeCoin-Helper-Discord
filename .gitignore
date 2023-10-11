@@ -132,3 +132,6 @@ dist
 # Configuration and database file.
 db.sqlite
 config.json
+config.*.json
+# But leave sample file.
+!config.sample.json

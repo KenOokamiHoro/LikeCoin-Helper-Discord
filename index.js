@@ -1,11 +1,11 @@
 const fs = require('fs');
 // Require the necessary discord.js classes
-const { Client, Collection, Intents } = require('discord.js');
-const { apiEndpoint,token } = require('./config.json');
-const {ProposalModel, ChannelModel, StatusModel} = require('./helpers/db');
-const {fetch_proposal,describe_proposal} = require('./helpers/proposals')
+const { Client, GatewayIntentBits, Partials, Collection } = require('discord.js');
+const { apiEndpoint, token } = require('./config.json');
+const { ProposalModel, ChannelModel, StatusModel } = require('./helpers/db');
+const { fetch_proposal, describe_proposal } = require('./helpers/proposals')
 // Create a new client instance
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds], partials: [Partials.Channel] });
 
 // Read Events
 client.commands = new Collection();
@@ -39,7 +39,7 @@ client.once('ready', c => {
 // Processing commands
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
-    console.log(`${interaction.user.tag} in #${interaction.channel.name} triggered an interaction.`);
+	console.log(`${interaction.user.tag} in #${interaction.channel.name} triggered an interaction.`);
 	const command = client.commands.get(interaction.commandName);
 
 	if (!command) return;
@@ -56,8 +56,8 @@ client.on('interactionCreate', async interaction => {
 	if (!interaction.isSelectMenu()) return;
 
 	if (interaction.customId === 'selectProposals') {
-		let proposal = await fetch_proposal(apiEndpoint,interaction.values[0]);
-		await interaction.update({ content: `/proposal ${interaction.values[0]}` , components: [] });
+		let proposal = await fetch_proposal(apiEndpoint, interaction.values[0]);
+		await interaction.update({ content: `/proposal ${interaction.values[0]}`, components: [] });
 		await client.channels.cache.get(interaction.channelId).send((describe_proposal(proposal.proposal)));
 	}
 });
