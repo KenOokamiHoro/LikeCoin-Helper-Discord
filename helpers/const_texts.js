@@ -21,6 +21,12 @@ const bigdipper_tips = {
     "PROPOSAL_STATUS_PASSED": "View tally result on BigDipper",
     "PROPOSAL_STATUS_REJECTED": "View tally result on BigDipper",
 };
+const pingpub_tips = {
+    "PROPOSAL_STATUS_DEPOSIT_PERIOD": "View more information on Ping.pub",
+    "PROPOSAL_STATUS_VOTING_PERIOD": "View more information on Ping.pub",
+    "PROPOSAL_STATUS_PASSED": "View tally result on Ping.pub",
+    "PROPOSAL_STATUS_REJECTED": "View tally result on Ping.pub",
+};
 const stake_like_co_tips = {
     "PROPOSAL_STATUS_DEPOSIT_PERIOD": "Deposit on dao.like.co",
     "PROPOSAL_STATUS_VOTING_PERIOD": "Vote on dao.like.co",
@@ -42,5 +48,5 @@ const more_information = {
 module.exports = {
     discussion_channel,
     update_descriptions,
-    bigdipper_tips, mintscan_tips, more_information, stake_like_co_tips
+    bigdipper_tips, pingpub_tips, more_information, stake_like_co_tips
 }
